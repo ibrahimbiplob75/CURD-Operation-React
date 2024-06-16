@@ -49,6 +49,36 @@ async function run() {
       const result=await users.deleteOne(query)
       res.send(result)
     })
+
+    app.get("/users/:id",async(req,res)=>{
+      const id=req.params.id;
+      const query={
+        _id:new ObjectId(id)
+      }
+      const result=await users.findOne(query)
+      res.send(result)
+    })
+
+    app.put("/users/:id",async(req,res)=>{
+      const id=req.params.id;
+      const data=req.body;
+      const options = { upsert: true };
+      const query={
+        _id:new ObjectId(id)
+      }
+      const updateUser={
+        $set:{
+          email:data.email,
+          name:data.name,
+          password:data.password
+        },
+        
+      }
+      const result=await users.updateOne(query,updateUser,options)
+      res.send(result)
+
+      })
+    
       
     
     
